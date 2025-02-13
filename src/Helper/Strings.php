@@ -60,4 +60,33 @@ class Strings
     {
         return ((strlen($string) - mb_strlen($string)) > 0);
     }
+
+    /**
+     * @param string $string
+     * @return string
+     */
+    public static function protectHTMLTags($string)
+    {
+        preg_match_all('/<[^>]*>|&lt;[^&gt;]*&gt;/sm', $string, $matches);
+
+        if(!empty($matches[0])){
+            foreach ($matches[0] as $tag){
+                $protectedTag = str_replace(["<", ">", "&lt;", "&lt;"], ["__LT__","__GT__", "__##LT##__", "__##GT##__"], $tag);
+                $string = str_replace($tag, $protectedTag, $string);
+            }
+        }
+
+        return $string;
+    }
+
+    /**
+     * @param string $string
+     * @return string
+     */
+    public static function unprotectHTMLTags($string)
+    {
+        $string = str_replace(["__LT__","__GT__", "__##LT##__", "__##GT##__"], ["<", ">", "&lt;", "&lt;"], $string);
+
+        return $string;
+    }
 }

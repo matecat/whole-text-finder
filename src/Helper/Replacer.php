@@ -44,6 +44,6 @@ class Replacer
      */
     private static function getModifiedRegexPattern($pattern)
     {
-        return '/(\|\|\|\||<.*?>|%{.*?})(*SKIP)(*FAIL)|'. ltrim($pattern, $pattern[0]);
+        return '/(\|\|\|\||<.*?>|&lt;.*?&gt;|%{.*?})(*SKIP)(*FAIL)|'. ltrim($pattern, $pattern[0]);
     }
 }
