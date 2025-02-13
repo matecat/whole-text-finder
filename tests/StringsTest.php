@@ -62,7 +62,7 @@ class StringsTest extends TestCase
     public function moreTestWithProtectedEscapedHTMLTags()
     {
         $string = "&lt;p id='x' data-content='xxxx'&gt;Handling&lt;/p&gt;";
-        $expected = "__¶¶LT¶¶__p id='x' data-content='xxxx'__¶¶GT¶¶__Handling__¶¶LT¶¶__/p__¶¶GT¶¶__";
+        $expected = "ɑɑɑɑp id='x' data-content='xxxx'ʒʒʒʒHandlingɑɑɑɑ/pʒʒʒʒ";
         $protected = Strings::protectHTMLTags($string);
 
         $this->assertEquals($expected, $protected);

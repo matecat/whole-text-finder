@@ -128,7 +128,8 @@ class Strings
                     }
                 }
 
-                $protectedTag = str_replace(["<", ">", "&lt;", "&gt;"], ["__LT__","__GT__", "__¶¶LT¶¶__", "__¶¶GT¶¶__"], $element);
+                $charMap = self::charMap();
+                $protectedTag = str_replace(["<", ">", "&lt;", "&gt;"], [$charMap["<"], $charMap[">"], $charMap["&lt;"], $charMap["&gt;"]], $element);
                 $string = str_replace($element, $protectedTag, $string);
             }
         }
@@ -142,8 +143,22 @@ class Strings
      */
     public static function unprotectHTMLTags($string)
     {
-        $string = str_replace(["__LT__","__GT__", "__¶¶LT¶¶__", "__¶¶GT¶¶__"], ["<", ">", "&lt;", "&gt;"], $string);
+        $charMap = self::charMap();
+        $string = str_replace([$charMap["<"], $charMap[">"], $charMap["&lt;"], $charMap["&gt;"]], ["<", ">", "&lt;", "&gt;"], $string);
 
         return $string;
+    }
+
+    /**
+     * @return array
+     */
+    private static function charMap()
+    {
+        return [
+            "<"    => "ʃʃʃʃ",
+            ">"    => "¶¶¶¶",
+            "&lt;" => "ɑɑɑɑ",
+            "&gt;" => "ʒʒʒʒ",
+        ];
     }
 }
