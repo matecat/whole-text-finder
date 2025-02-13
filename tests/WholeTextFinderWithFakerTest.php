@@ -34,7 +34,7 @@ class WholeTextFinderWithFakerTest extends TestCase
             $password = $faker->password;
             $matches = WholeTextFinder::find($password, $password, true, true, true);
 
-            $this->assertCount(1, $matches);
+            $this->assertCount(1, $matches, "Password not matching:" . $password);
         }
     }
 

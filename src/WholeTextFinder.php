@@ -24,8 +24,9 @@ class WholeTextFinder
 
         preg_match_all($patternAndHaystack['pattern'], $patternAndHaystack['haystack'], $matches, PREG_OFFSET_CAPTURE);
 
-        // @TODO if $skipHtmlEntities == true
-        //      $patternAndHaystack['haystack'] qui devo reintrodurre i tag html <> e &lt;&gt;
+        if($skipHtmlEntities === true){
+            $patternAndHaystack['haystack'] = Strings::unprotectHTMLTags($patternAndHaystack['haystack']);
+        }
 
         self::mbCorrectMatchPositions($patternAndHaystack['haystack'], $matches);
 
@@ -88,7 +89,7 @@ class WholeTextFinder
     private static function getPatternAndHaystack($haystack, $needle, $skipHtmlEntities = true, $exactMatch = false, $caseSensitive = false, $preserveNbsps = false)
     {
         $pattern = self::getSearchPattern($needle, $skipHtmlEntities, $exactMatch, $caseSensitive, $preserveNbsps);
-        $haystack = ($skipHtmlEntities) ? Strings::htmlEntityDecode($haystack) : $haystack; // @TODO if $skipHtmlEntities == true qui devo proteggere i tag html
+        $haystack = ($skipHtmlEntities) ? Strings::htmlEntityDecode(Strings::protectHTMLTags($haystack)) : $haystack;
         $haystack = (false === $preserveNbsps) ? Strings::cutNbsps($haystack) : $haystack;
 
         return [
@@ -135,8 +136,10 @@ class WholeTextFinder
     {
         $patternAndHaystack = self::getPatternAndHaystack($haystack, $needle, $skipHtmlEntities, $exactMatch, $caseSensitive, $preserveNbsps);
         $replacement = Replacer::replace($patternAndHaystack['pattern'], $replacement, $patternAndHaystack['haystack']);
-        // @TODO if $skipHtmlEntities == true
-        //      $replacement qui devo reintrodurre i tag html <> e &lt;&gt;
+
+        if($skipHtmlEntities === true){
+            $replacement = Strings::unprotectHTMLTags($replacement);
+        }
 
         return [
             'replacement' => $replacement,

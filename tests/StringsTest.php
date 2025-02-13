@@ -55,4 +55,32 @@ class StringsTest extends TestCase
 
         $this->assertEquals($string, $unprotected);
     }
+
+    /**
+     * @test
+     */
+    public function moreTestWithProtectedEscapedHTMLTags()
+    {
+        $string = "&lt;p id='x' data-content='xxxx'&gt;Handling&lt;/p&gt;";
+        $expected = "__¶¶LT¶¶__p id='x' data-content='xxxx'__¶¶GT¶¶__Handling__¶¶LT¶¶__/p__¶¶GT¶¶__";
+        $protected = Strings::protectHTMLTags($string);
+
+        $this->assertEquals($expected, $protected);
+
+        $unprotected = Strings::unprotectHTMLTags($protected);
+
+        $this->assertEquals($string, $unprotected);
+    }
+
+    /**
+     * @test
+     */
+    public function dontEscapeAPassword()
+    {
+        $string = '3mM?t<T0&3AhFl`>#';
+        $protected = Strings::protectHTMLTags($string);
+
+        $this->assertEquals($string, $protected);
+
+    }
 }

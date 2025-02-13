@@ -62,17 +62,52 @@ class Strings
     }
 
     /**
+     * @param $needle
+     * @param $haystack
+     *
+     * @return bool
+     */
+    public static function contains($needle, $haystack)
+    {
+        if(empty($haystack)){
+            return false;
+        }
+
+        return strpos($haystack, $needle) !== false;
+    }
+
+    /**
      * @param string $string
      * @return string
      */
     public static function protectHTMLTags($string)
     {
-        preg_match_all('/<[^>]*>|&lt;[^&gt;]*&gt;/sm', $string, $matches);
+        preg_match_all('/&lt;(.*?)&gt;|<(.*?)>/sm', $string, $matches);
 
         if(!empty($matches[0])){
-            foreach ($matches[0] as $tag){
-                $protectedTag = str_replace(["<", ">", "&lt;", "&lt;"], ["__LT__","__GT__", "__##LT##__", "__##GT##__"], $tag);
-                $string = str_replace($tag, $protectedTag, $string);
+            foreach ($matches[0] as $index => $element){
+
+                $tag = explode(" ", $element);
+                $tag = str_replace(["<", ">", "&lt;", "&gt;", "/"], "", $tag[0]);
+
+                $nextElement = $matches[0][$index+1] ?? null;
+
+                if(!self::contains("/", $element)){
+
+                    if($nextElement === null){
+                        continue;
+                    }
+
+                    $nextTag = explode(" ", $nextElement);
+                    $nextTag = str_replace(["<", ">", "&lt;", "&gt;", "/"], "", $nextTag[0]);
+
+                    if($nextTag !== $tag){
+                        continue;
+                    }
+                }
+
+                $protectedTag = str_replace(["<", ">", "&lt;", "&gt;"], ["__LT__","__GT__", "__¶¶LT¶¶__", "__¶¶GT¶¶__"], $element);
+                $string = str_replace($element, $protectedTag, $string);
             }
         }
 
@@ -85,7 +120,7 @@ class Strings
      */
     public static function unprotectHTMLTags($string)
     {
-        $string = str_replace(["__LT__","__GT__", "__##LT##__", "__##GT##__"], ["<", ">", "&lt;", "&lt;"], $string);
+        $string = str_replace(["__LT__","__GT__", "__¶¶LT¶¶__", "__¶¶GT¶¶__"], ["<", ">", "&lt;", "&gt;"], $string);
 
         return $string;
     }
