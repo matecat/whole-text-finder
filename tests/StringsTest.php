@@ -77,10 +77,15 @@ class StringsTest extends TestCase
      */
     public function dontEscapeAPassword()
     {
-        $string = '3mM?t<T0&3AhFl`>#';
-        $protected = Strings::protectHTMLTags($string);
+        $passwords = [
+            '3mM?t<T0&3AhFl`>#',
+            '<~&6^{ck/Px>ky(0wzx',
+        ];
 
-        $this->assertEquals($string, $protected);
+        foreach ($passwords as $password){
+            $protected = Strings::protectHTMLTags($password);
 
+            $this->assertEquals($protected, $password, "Password not matching: " . $password);
+        }
     }
 }

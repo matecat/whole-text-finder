@@ -76,6 +76,16 @@ class Strings
         return strpos($haystack, $needle) !== false;
     }
 
+    public static function firstChar($string)
+    {
+        return $string[0];
+    }
+
+    public static function lastChar($string)
+    {
+        return $string[strlen($string) - 1];
+    }
+
     /**
      * @param string $string
      * @return string
@@ -102,6 +112,18 @@ class Strings
                     $nextTag = str_replace(["<", ">", "&lt;", "&gt;", "/"], "", $nextTag[0]);
 
                     if($nextTag !== $tag){
+                        continue;
+                    }
+                } else {
+                    // self closing tag
+                    $closingTag = explode(" ", $element);
+                    $closingTag = str_replace(["<", ">", "&lt;", "&gt;"], "", $closingTag[0]);
+
+                    if(empty($closingTag)){
+                        continue;
+                    }
+
+                    if(!(self::firstChar($closingTag) === "/" or self::lastChar($closingTag) === "/")){
                         continue;
                     }
                 }
