@@ -24,7 +24,7 @@
     "psr-4": { "Matecat\\Finder\\Tests\\": "tests/" }
   },
   "require": {
-    "php": ">=5.5"
+    "php": ">=7.4"
   },
   "require-dev": {
     "phpunit/phpunit": "^8.2",

@@ -145,4 +145,41 @@ class WholeTextFinderReplacementTest extends TestCase
 
         $this->assertEquals($expected, $matches['replacement']);
     }
+
+    /*
+     * =========================================================
+     * TESTS WITH ESCAPED HTML
+     * =========================================================
+     */
+
+    /**
+     * @test
+     */
+    public function find_and_replace_with_hashtag_with_escaped_html()
+    {
+        $haystack = "Ciao questa è una stringa con ## &lt;a href=\"#\"&gt;contenuto&lt;/a&gt; dentro un tag HTML.";
+        $needle = '##';
+        $replacement = "test";
+
+        $expected = "Ciao questa è una stringa con test &lt;a href=\"#\"&gt;contenuto&lt;/a&gt; dentro un tag HTML.";
+        $matches = WholeTextFinder::findAndReplace($haystack, $needle, $replacement);
+
+        $this->assertEquals($expected, $matches['replacement']);
+    }
+
+    /**
+     * @test
+     */
+    public function find_and_replace_with_ampersand_and_case_sensitive_with_escaped_html()
+    {
+        $haystack  = "handling, Storage &amp; &lt;p id='x' data-content='xxxx'&gt;Handling&lt;/p&gt;:";
+
+        $needle = "Handling";
+        $replacement = "XX";
+
+        $expected = "handling, Storage & &lt;p id='x' data-content='xxxx'&gt;XX&lt;/p&gt;:";
+        $matches = WholeTextFinder::findAndReplace($haystack, $needle, $replacement, true, false ,true);
+
+        $this->assertEquals($expected, $matches['replacement']);
+    }
 }
