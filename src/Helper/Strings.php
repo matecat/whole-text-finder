@@ -100,10 +100,12 @@ class Strings
                 $tag = explode(" ", $element);
                 $tag = str_replace(["<", ">", "&lt;", "&gt;", "/"], "", $tag[0]);
 
+                // opening tags
                 if(!self::contains("/", $element)){
 
                     $tagMatch = false;
 
+                    // check for the closing tag
                     for($i = ($index+1); $i < count($matches[0]); $i++){
                         $nextElement = $matches[0][$i] ?? null;
 
@@ -122,9 +124,9 @@ class Strings
                     if($tagMatch === false){
                         continue;
                     }
-
-                } else {
-                    // self closing tag
+                }
+                // self closing tag
+                else {
                     $closingTag = explode(" ", $element);
                     $closingTag = str_replace(["<", ">", "&lt;", "&gt;"], "", $closingTag[0]);
 
