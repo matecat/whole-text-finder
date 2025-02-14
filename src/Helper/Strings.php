@@ -100,20 +100,29 @@ class Strings
                 $tag = explode(" ", $element);
                 $tag = str_replace(["<", ">", "&lt;", "&gt;", "/"], "", $tag[0]);
 
-                $nextElement = $matches[0][$index+1] ?? null;
-
                 if(!self::contains("/", $element)){
 
-                    if($nextElement === null){
+                    $tagMatch = false;
+
+                    for($i = ($index+1); $i < count($matches[0]); $i++){
+                        $nextElement = $matches[0][$i] ?? null;
+
+                        if($nextElement === null){
+                            continue;
+                        }
+
+                        $nextTag = explode(" ", $nextElement);
+                        $nextTag = str_replace(["<", ">", "&lt;", "&gt;", "/"], "", $nextTag[0]);
+
+                        if($nextTag === $tag){
+                            $tagMatch = true;
+                        }
+                    }
+
+                    if($tagMatch === false){
                         continue;
                     }
 
-                    $nextTag = explode(" ", $nextElement);
-                    $nextTag = str_replace(["<", ">", "&lt;", "&gt;", "/"], "", $nextTag[0]);
-
-                    if($nextTag !== $tag){
-                        continue;
-                    }
                 } else {
                     // self closing tag
                     $closingTag = explode(" ", $element);

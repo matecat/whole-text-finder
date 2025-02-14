@@ -61,15 +61,28 @@ class StringsTest extends TestCase
      */
     public function moreTestWithProtectedEscapedHTMLTags()
     {
-        $string = "&lt;p id='x' data-content='xxxx'&gt;Handling&lt;/p&gt;";
-        $expected = "ɑɑɑɑp id='x' data-content='xxxx'ʒʒʒʒHandlingɑɑɑɑ/pʒʒʒʒ";
-        $protected = Strings::protectHTMLTags($string);
+        $strings = [
+            [
+                "string" => "&lt;p id='x' data-content='xxxx'&gt;Handling&lt;/p&gt;",
+                "expected" => "ɑɑɑɑp id='x' data-content='xxxx'ʒʒʒʒHandlingɑɑɑɑ/pʒʒʒʒ"
+            ],
+            [
+                "string" => "&lt;p&gt;Handling &lt;br/&gt; of this string&lt;/p&gt;",
+                "expected" => "ɑɑɑɑpʒʒʒʒHandling ɑɑɑɑbr/ʒʒʒʒ of this stringɑɑɑɑ/pʒʒʒʒ"
+            ],
+        ];
 
-        $this->assertEquals($expected, $protected);
+        foreach ($strings as $s){
+            $string = $s['string'];
+            $expected = $s['expected'];
+            $protected = Strings::protectHTMLTags($string);
 
-        $unprotected = Strings::unprotectHTMLTags($protected);
+            $this->assertEquals($expected, $protected, "Not matching exptected string: " . $expected);
 
-        $this->assertEquals($string, $unprotected);
+            $unprotected = Strings::unprotectHTMLTags($protected);
+
+            $this->assertEquals($string, $unprotected);
+        }
     }
 
     /**
