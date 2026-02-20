@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Matecat\Finder\Helper;
 
 class Replacer
@@ -17,12 +19,11 @@ class Replacer
      * @param string $pattern
      * @param string $replacement
      * @param string $haystack
-     *
-     * @return string|string[]
+     * @return string
      */
-    public static function replace($pattern, $replacement, $haystack)
+    public static function replace(string $pattern, string $replacement, string $haystack): string
     {
-        return preg_replace(self::getModifiedRegexPattern($pattern), $replacement, $haystack);
+        return preg_replace(self::getModifiedRegexPattern($pattern), $replacement, $haystack) ?? $haystack;
     }
 
     /**
@@ -42,7 +43,7 @@ class Replacer
      *
      * @return string
      */
-    private static function getModifiedRegexPattern($pattern)
+    private static function getModifiedRegexPattern(string $pattern): string
     {
         return '/(\|\|\|\||<.*?>|&lt;.*?&gt;|%{.*?})(*SKIP)(*FAIL)|'. ltrim($pattern, $pattern[0]);
     }

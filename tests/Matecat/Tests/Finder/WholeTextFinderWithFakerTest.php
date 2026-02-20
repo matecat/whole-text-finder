@@ -1,18 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Matecat\Finder\Tests;
 
 use Faker\Factory;
 use Matecat\Finder\WholeTextFinder;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-class WholeTextFinderWithFakerTest extends TestCase
+class WholeTextFinderWithFakerTest extends Base
 {
-    /**
-     * @test
-     */
-    public function testWithEmoji()
+    #[Test]
+    public function testWithEmoji(): void
     {
+        $this->markTestSkippedInCoverage();
+
         $faker = Factory::create();
 
         for ($i=0;$i<1000;$i++) {
@@ -23,11 +26,11 @@ class WholeTextFinderWithFakerTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
-    public function testWithPasswords()
+    #[Test]
+    public function testWithPasswords(): void
     {
+        $this->markTestSkippedInCoverage();
+
         $faker = Factory::create();
 
         for ($i=0;$i<1000;$i++) {
@@ -38,11 +41,11 @@ class WholeTextFinderWithFakerTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
-    public function testWithAddresses()
+    #[Test]
+    public function testWithAddresses(): void
     {
+        $this->markTestSkippedInCoverage();
+
         $faker = Factory::create();
 
         for ($i=0;$i<1000;$i++) {

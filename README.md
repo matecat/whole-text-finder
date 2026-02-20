@@ -2,7 +2,11 @@
 
 [![license](https://img.shields.io/github/license/matecat/whole-text-finder.svg)]()
 [![Packagist](https://img.shields.io/packagist/v/matecat/whole-text-finder.svg)]()
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/matecat/whole-text-finder/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/matecat/whole-text-finder/?branch=master)
+[![Build Status](https://app.travis-ci.com/matecat/whole-text-finder.svg?token=qBazxkHwP18h3EWnHjjF&branch=main)](https://app.travis-ci.com/matecat/whole-text-finder)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=matecat_whole-text-finder&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=matecat_whole-text-finder)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=matecat_whole-text-finder&metric=coverage)](https://sonarcloud.io/summary/new_code?id=matecat_whole-text-finder)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=matecat_whole-text-finder&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=matecat_whole-text-finder)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=matecat_whole-text-finder&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=matecat_whole-text-finder)
 
 **WholeTextFinder** is a simple whole text finder.
 
@@ -96,7 +100,7 @@ $matches = WholeTextFinder::findAndReplace($haystack, $needle, $replacement);
 // array(2) {
 //   ["replacement"]=>
 //   string(252) "Δύο παράγοντες καθόρισαν την αντίληψή μου για την Τενεσί Ουίλιαμς test τη σκηνική παρουσίαση των κειμένων: η Maria Britneva test η Annette Saddik, αφετέρου."
-//   ["occurrencies"]=>
+//   ["occurrences"]=>
 //   array(2) {
 //     [0]=>
 //     array(2) {
@@ -138,7 +142,7 @@ $matches = WholeTextFinder::findAndReplace($haystack, $needle, $replacement);
 // array(2) {
 //   ["replacement"]=>
 //   string(252) "Beauty -> test Anti-Akne Gesichtsreiniger Schlankmacher <g id="2">XXX</g>"
-//   ["occurrencies"]=>
+//   ["occurrences"]=>
 //   array(1) {
 //    [0]=>
 //      array(2) {
@@ -163,7 +167,7 @@ $matches = WholeTextFinder::findAndReplace($haystack, $needle, $replacement);
 // array(2) {
 //   ["replacement"]=>
 //   string(252) "Beauty -> 2 Anti-Akne Gesichtsreiniger Schlankmacher <g id="2">test</g>"
-//   ["occurrencies"]=>
+//   ["occurrences"]=>
 //   array(1) {
 //    [0]=>
 //      array(2) {

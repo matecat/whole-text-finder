@@ -1,16 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Matecat\Finder\Tests;
 
 use Matecat\Finder\WholeTextFinder;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class WholeTextFinderTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function can_detect_positions()
+    #[Test]
+    public function can_detect_positions(): void
     {
         $haystack  = "La casa è bella bella";
         $needle = "bella";
@@ -22,10 +23,8 @@ class WholeTextFinderTest extends TestCase
         $this->assertEquals(16, $matches[1][1]);
     }
 
-    /**
-     * @test
-     */
-    public function search_with_square_brackets()
+    #[Test]
+    public function search_with_square_brackets(): void
     {
         $haystack  = "Text with [[square brackets]]";
         $needle = "[[";
@@ -35,10 +34,8 @@ class WholeTextFinderTest extends TestCase
         $this->assertCount(1, $matches);
     }
 
-    /**
-     * @test
-     */
-    public function search_with_curly_brackets()
+    #[Test]
+    public function search_with_curly_brackets(): void
     {
         $haystack  = "Text with {{curly brackets}}";
         $needle = "{{";
@@ -48,10 +45,8 @@ class WholeTextFinderTest extends TestCase
         $this->assertCount(1, $matches);
     }
 
-    /**
-     * @test
-     */
-    public function search_with_and_symbol()
+    #[Test]
+    public function search_with_and_symbol(): void
     {
         $haystack  = "Storage &amp; Handling:";
 
@@ -81,10 +76,8 @@ class WholeTextFinderTest extends TestCase
         $this->assertCount(1, $matches);
     }
 
-    /**
-     * @test
-     */
-    public function search_with_at_symbol()
+    #[Test]
+    public function search_with_at_symbol(): void
     {
         $haystack  = "Text with @ symbol";
         $needle = "@";
@@ -94,10 +87,8 @@ class WholeTextFinderTest extends TestCase
         $this->assertCount(1, $matches);
     }
 
-    /**
-     * @test
-     */
-    public function search_with_apos()
+    #[Test]
+    public function search_with_apos(): void
     {
         $haystack  = "Text with &apos; symbol";
         $needle = "'";
@@ -111,10 +102,8 @@ class WholeTextFinderTest extends TestCase
         $this->assertCount(1, $matches);
     }
 
-    /**
-     * @test
-     */
-    public function search_in_texts_with_dates()
+    #[Test]
+    public function search_in_texts_with_dates(): void
     {
         $haystackWithDate  = "21/06/2019";
         $needleWithDate = "21/06/2019";
@@ -124,10 +113,8 @@ class WholeTextFinderTest extends TestCase
         $this->assertCount(1, $matches);
     }
 
-    /**
-     * @test
-     */
-    public function search_in_texts_with_nbsps()
+    #[Test]
+    public function search_in_texts_with_nbsps(): void
     {
         $haystackWithNbsp  = "Lawful basis for processing including basis of legitimate interest";
         $needleWithoutNbsp = "Lawful basis for processing including basis of legitimate interest";
@@ -139,10 +126,8 @@ class WholeTextFinderTest extends TestCase
         $this->assertCount(1, $matches2);
     }
 
-    /**
-     * @test
-     */
-    public function find_should_return_correct_matches()
+    #[Test]
+    public function find_should_return_correct_matches(): void
     {
         $haystack  = "PHP é il @ linguaggio ggio #1 del mondo.";
         $needle = "ggio";
@@ -171,10 +156,8 @@ class WholeTextFinderTest extends TestCase
         $this->assertEquals($expected2, $matches2);
     }
 
-    /**
-     * @test
-     */
-    public function search_in_texts()
+    #[Test]
+    public function search_in_texts(): void
     {
         $haystack  = "PHP é il linguaggio numero 1 del mondo.";
 
@@ -217,10 +200,8 @@ class WholeTextFinderTest extends TestCase
         $this->assertCount(1, $matches);
     }
 
-    /**
-     * @test
-     */
-    public function search_in_texts_with_html_entities()
+    #[Test]
+    public function search_in_texts_with_html_entities(): void
     {
         $haystack  = "&lt;a href='##'/&gt;This is a string&lt;/a&gt; with HTML entities;&#13;&#13;They must be skipped!";
 
@@ -267,10 +248,8 @@ class WholeTextFinderTest extends TestCase
         $this->assertCount(2, $matches);
     }
 
-    /**
-     * @test
-     */
-    public function search_in_texts_with_ampersand()
+    #[Test]
+    public function search_in_texts_with_ampersand(): void
     {
         $haystack = 'Тест &amp; Тестирование';
         $needle = "Тест &amp; Тестирование";
@@ -279,10 +258,8 @@ class WholeTextFinderTest extends TestCase
         $this->assertCount(1, $matches);
     }
 
-    /**
-     * @test
-     */
-    public function search_in_texts_with_japanese_ideograms()
+    #[Test]
+    public function search_in_texts_with_japanese_ideograms(): void
     {
         $haystack = '「ハッスルの日」開催について';
         $needle = "ハッスルの日";
@@ -296,10 +273,8 @@ class WholeTextFinderTest extends TestCase
         $this->assertCount(1, $matches);
     }
 
-    /**
-     * @test
-     */
-    public function search_in_texts_with_cyrillic_words()
+    #[Test]
+    public function search_in_texts_with_cyrillic_words(): void
     {
         $haystackArray = [
             'Тест и тест',
@@ -350,10 +325,8 @@ class WholeTextFinderTest extends TestCase
         $this->assertCount(1, $matches[1]);
     }
 
-    /**
-     * @test
-     */
-    public function search_in_texts_with_arabic_words()
+    #[Test]
+    public function search_in_texts_with_arabic_words(): void
     {
         $haystack = '. سعدت بلقائك.';
         $needle = ". سعدت";
@@ -362,10 +335,8 @@ class WholeTextFinderTest extends TestCase
         $this->assertCount(1, $matches);
     }
 
-    /**
-     * @test
-     */
-    public function search_in_texts_with_greek_words()
+    #[Test]
+    public function search_in_texts_with_greek_words(): void
     {
         $haystack = 'Χάρηκα πολύ';
 

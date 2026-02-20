@@ -1,16 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Matecat\Finder\Tests;
 
 use Matecat\Finder\Helper\RegexEscaper;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class RegexEscaperTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function get_the_regular_regex()
+    #[Test]
+    public function get_the_regular_regex(): void
     {
         $string  = "PHP é 😀 il @ (linguaggio) ggio #1 del mondo. 😀";
         $escaped = RegexEscaper::escapeWholeTextPattern($string);
@@ -19,10 +20,8 @@ class RegexEscaperTest extends TestCase
         $this->assertEquals($escaped, $expected);
     }
 
-    /**
-     * @test
-     */
-    public function get_the_whole_text_regex()
+    #[Test]
+    public function get_the_whole_text_regex(): void
     {
         $string  = "PHP é 😀 il @ (linguaggio) ggio #1 del mondo. 😀";
         $escaped = RegexEscaper::escapeWholeTextPattern($string);
@@ -37,10 +36,8 @@ class RegexEscaperTest extends TestCase
         $this->assertEquals($escaped, $expected);
     }
 
-    /**
-     * @test
-     */
-    public function get_the_whole_text_regex_with_cyrillic_words()
+    #[Test]
+    public function get_the_whole_text_regex_with_cyrillic_words(): void
     {
         $string  = "Тест & Тестирование";
         $escaped = RegexEscaper::escapeWholeTextPattern($string);
@@ -49,10 +46,8 @@ class RegexEscaperTest extends TestCase
         $this->assertEquals($escaped, $expected);
     }
 
-    /**
-     * @test
-     */
-    public function get_the_whole_text_regex_with_greek_words()
+    #[Test]
+    public function get_the_whole_text_regex_with_greek_words(): void
     {
         $string  = "Χάρηκα πολύ";
         $escaped = RegexEscaper::escapeWholeTextPattern($string);

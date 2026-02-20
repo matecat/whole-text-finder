@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Matecat\Finder\Helper;
 
 class RegexEscaper
@@ -9,7 +11,7 @@ class RegexEscaper
      *
      * @return string
      */
-    public static function escapeWholeTextPattern($needle)
+    public static function escapeWholeTextPattern(string $needle): string
     {
         $escapedNeedle = self::escapeRegularPattern($needle);
         $splittedNeedle = Strings::split($escapedNeedle);
@@ -17,13 +19,13 @@ class RegexEscaper
         $final = '';
 
         foreach ($splittedNeedle as $index => $letter) {
-            if ($index === self::getFirstBounduaryPosition($splittedNeedle)) {
+            if ($index === self::getFirstBoundaryPosition($splittedNeedle)) {
                 $final .= "\\b";
             }
 
             $final .= $letter;
 
-            if ($index === self::getLastBounduaryPosition($splittedNeedle)) {
+            if ($index === self::getLastBoundaryPosition($splittedNeedle)) {
                 $final .= "\\b";
             }
         }
@@ -32,14 +34,14 @@ class RegexEscaper
     }
 
     /**
-     * @param array $splittedNeedle
+     * @param array<int, string> $splitNeedle
      *
      * @return int
      */
-    private static function getFirstBounduaryPosition($splittedNeedle)
+    private static function getFirstBoundaryPosition(array $splitNeedle): int
     {
-        for ($i=0; $i < count($splittedNeedle); $i++) {
-            if (self::isBoundary($splittedNeedle[$i])) {
+        for ($i=0; $i < count($splitNeedle); $i++) {
+            if (self::isBoundary($splitNeedle[$i])) {
                 return $i;
             }
         }
@@ -48,14 +50,14 @@ class RegexEscaper
     }
 
     /**
-     * @param array $splittedNeedle
+     * @param array<int, string> $splitNeedle
      *
      * @return int
      */
-    private static function getLastBounduaryPosition($splittedNeedle)
+    private static function getLastBoundaryPosition(array $splitNeedle): int
     {
-        for ($i=(count($splittedNeedle)-1); $i >= 0; $i--) {
-            if (self::isBoundary($splittedNeedle[$i])) {
+        for ($i=(count($splitNeedle)-1); $i >= 0; $i--) {
+            if (self::isBoundary($splitNeedle[$i])) {
                 return $i;
             }
         }
@@ -68,9 +70,9 @@ class RegexEscaper
      *
      * @return bool
      */
-    private static function isBoundary($letter)
+    private static function isBoundary(string $letter): bool
     {
-        return (preg_match("/[\w]/iu", $letter) > 0) ? true : false;
+        return preg_match("/\w/iu", $letter) > 0;
     }
 
     /**
@@ -78,7 +80,7 @@ class RegexEscaper
      *
      * @return string
      */
-    public static function escapeRegularPattern($needle)
+    public static function escapeRegularPattern(string $needle): string
     {
         $needle = preg_quote($needle);
 
