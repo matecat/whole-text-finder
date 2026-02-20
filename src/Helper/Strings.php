@@ -43,7 +43,7 @@ class Strings
      */
     public static function isMultibyte(string $string): bool
     {
-        return ((strlen($string) - mb_strlen($string)) > 0);
+        return (strlen($string) - mb_strlen($string)) > 0;
     }
 
     /**
@@ -86,43 +86,66 @@ class Strings
     public static function protectHTMLTags(string $string): string
     {
         preg_match_all('/&lt;(.*?)&gt;|<(.*?)>/sm', $string, $matches);
-        if(!empty($matches[0])){
-            foreach ($matches[0] as $index => $element){
-                $tag = explode(" ", $element);
-                $tag = str_replace(["<", ">", "&lt;", "&gt;", "/"], "", $tag[0]);
-                // opening tags
-                if(!self::contains("/", $element)){
-                    $tagMatch = false;
-                    // check for the closing tag
-                    for($i = ($index+1); $i < count($matches[0]); $i++){
-                        $nextElement = $matches[0][$i];
-                        $nextTag = explode(" ", $nextElement);
-                        $nextTag = str_replace(["<", ">", "&lt;", "&gt;", "/"], "", $nextTag[0]);
-                        if($nextTag === $tag){
-                            $tagMatch = true;
-                        }
-                    }
-                    if($tagMatch === false){
-                        continue;
-                    }
-                }
-                // self closing tag
-                else {
-                    $closingTag = explode(" ", $element);
-                    $closingTag = str_replace(["<", ">", "&lt;", "&gt;"], "", $closingTag[0]);
-                    if(empty($closingTag)){
-                        continue;
-                    }
-                    if(!(self::firstChar($closingTag) === "/" or self::lastChar($closingTag) === "/")){
-                        continue;
-                    }
-                }
-                $charMap = self::charMap();
-                $protectedTag = str_replace(["<", ">", "&lt;", "&gt;"], [$charMap["<"], $charMap[">"], $charMap["&lt;"], $charMap["&gt;"]], $element);
-                $string = str_replace($element, $protectedTag, $string);
+
+        foreach ($matches[0] as $index => $element) {
+            $shouldProtect = self::contains("/", $element)
+                ? self::isSelfClosingTag($element)
+                : self::hasMatchingClosingTag($element, array_slice($matches[0], $index + 1));
+
+            if (!$shouldProtect) {
+                continue;
+            }
+
+            $charMap = self::charMap();
+            $protectedTag = str_replace(["<", ">", "&lt;", "&gt;"], [$charMap["<"], $charMap[">"], $charMap["&lt;"], $charMap["&gt;"]], $element);
+            $string = str_replace($element, $protectedTag, $string);
+        }
+
+        return $string;
+    }
+
+    /**
+     * Strips all angle-bracket variants and slashes from the first token of a tag string,
+     * returning a bare tag name.
+     */
+    private static function normaliseTag(string $element): string
+    {
+        $firstToken = explode(" ", $element)[0];
+        return str_replace(["<", ">", "&lt;", "&gt;", "/"], "", $firstToken);
+    }
+
+    /**
+     * Returns true when at least one of the subsequent elements shares the same tag name,
+     * indicating a matching closing tag exists for the current opening tag.
+     *
+     * @param array<int, string> $remainingElements
+     */
+    private static function hasMatchingClosingTag(string $element, array $remainingElements): bool
+    {
+        $tag = self::normaliseTag($element);
+
+        foreach ($remainingElements as $next) {
+            if (self::normaliseTag($next) === $tag) {
+                return true;
             }
         }
-        return $string;
+
+        return false;
+    }
+
+    /**
+     * Returns true when the element is a valid self-closing tag,
+     * i.e. its bare name starts or ends with a forward slash.
+     */
+    private static function isSelfClosingTag(string $element): bool
+    {
+        $closingTag = str_replace(["<", ">", "&lt;", "&gt;"], "", explode(" ", $element)[0]);
+
+        if (empty($closingTag)) {
+            return false;
+        }
+
+        return self::firstChar($closingTag) === "/" || self::lastChar($closingTag) === "/";
     }
 
     /**
